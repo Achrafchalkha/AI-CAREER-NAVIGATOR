@@ -7,15 +7,16 @@ import org.springframework.context.annotation.Bean;
 
 @Configuration
 public class AIConfig {
-    
-    @Value("${ai.openai.api-key}")
-    private String openAiApiKey;
-    
-    @Value("${ai.google.api-key}")
-    private String googleApiKey;
-    
+
+    @Value("${openrouter.api.key}")
+    private String openRouterApiKey;
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-} 
+
+    public String getOpenRouterApiKey() {
+        return openRouterApiKey;
+    }
+}

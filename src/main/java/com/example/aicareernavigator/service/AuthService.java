@@ -1,6 +1,8 @@
 package com.example.aicareernavigator.service;
 
+import com.example.aicareernavigator.dto.LoginRequest;
 import com.example.aicareernavigator.dto.RegisterRequest;
+import com.example.aicareernavigator.dto.AuthResponse;
 import com.example.aicareernavigator.model.User;
 import com.example.aicareernavigator.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -21,37 +24,73 @@ public class AuthService {
     @Autowired
     private JwtService jwtService;
 
-    public User register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) {
         // Check if user already exists
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already registered");
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("User already exists with email: " + request.getEmail());
         }
 
         // Create new user
-        User user = new User(
-            request.getEmail(),
-            passwordEncoder.encode(request.getPassword()),
-            request.getFirstName(),
-            request.getLastName()
-        );
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setCreatedAt(new Date());
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        // Generate JWT token
+        String token = jwtService.generateToken(savedUser);
+
+        // Create response
+        AuthResponse response = new AuthResponse();
+        response.setToken(token);
+        response.setEmail(savedUser.getEmail());
+        response.setFirstName(savedUser.getFirstName());
+        response.setLastName(savedUser.getLastName());
+        response.setMessage("User registered successfully");
+
+        return response;
     }
 
-    public User authenticate(String email, String password) {
-        User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+    public AuthResponse login(LoginRequest request) {
+        Optional<User> userOpt = userRepository.findByEmail(request.getEmail());
+        
+        if (userOpt.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
 
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        User user = userOpt.get();
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
 
-        // Update last login
-        user.setLastLogin(new Date());
-        return userRepository.save(user);
+        // Generate JWT token
+        String token = jwtService.generateToken(user);
+
+        // Create response
+        AuthResponse response = new AuthResponse();
+        response.setToken(token);
+        response.setEmail(user.getEmail());
+        response.setFirstName(user.getFirstName());
+        response.setLastName(user.getLastName());
+        response.setMessage("Login successful");
+
+        return response;
     }
 
-    public String generateToken(User user) {
-        return jwtService.generateToken(user);
+    public User getUserFromToken(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        
+        if (!jwtService.isTokenValid(token)) {
+            throw new RuntimeException("Invalid or expired token");
+        }
+        
+        String email = jwtService.extractEmail(token);
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
-} 
+}

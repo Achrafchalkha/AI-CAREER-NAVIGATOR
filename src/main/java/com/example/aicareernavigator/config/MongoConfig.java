@@ -30,14 +30,14 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         ConnectionString connectionString = new ConnectionString(mongoUri);
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
             .applyConnectionString(connectionString)
-            .applyToSocketSettings(builder -> 
+            .applyToSocketSettings(builder ->
                 builder.connectTimeout(20000, TimeUnit.MILLISECONDS)
                        .readTimeout(20000, TimeUnit.MILLISECONDS))
-            .applyToConnectionPoolSettings(builder -> 
+            .applyToConnectionPoolSettings(builder ->
                 builder.maxSize(50)
                        .maxWaitTime(20000, TimeUnit.MILLISECONDS))
             .build();
-        
+
         return MongoClients.create(mongoClientSettings);
     }
 
