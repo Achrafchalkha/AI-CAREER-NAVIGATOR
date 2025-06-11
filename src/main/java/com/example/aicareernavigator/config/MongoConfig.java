@@ -30,12 +30,17 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         ConnectionString connectionString = new ConnectionString(mongoUri);
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
             .applyConnectionString(connectionString)
+            .applyToSslSettings(builder ->
+                builder.enabled(true)
+                       .invalidHostNameAllowed(true)) // Allow for development - MongoDB Atlas SSL issue
             .applyToSocketSettings(builder ->
-                builder.connectTimeout(20000, TimeUnit.MILLISECONDS)
-                       .readTimeout(20000, TimeUnit.MILLISECONDS))
+                builder.connectTimeout(30000, TimeUnit.MILLISECONDS)
+                       .readTimeout(30000, TimeUnit.MILLISECONDS))
             .applyToConnectionPoolSettings(builder ->
                 builder.maxSize(50)
-                       .maxWaitTime(20000, TimeUnit.MILLISECONDS))
+                       .minSize(5)
+                       .maxWaitTime(30000, TimeUnit.MILLISECONDS)
+                       .maxConnectionIdleTime(60000, TimeUnit.MILLISECONDS))
             .build();
 
         return MongoClients.create(mongoClientSettings);
