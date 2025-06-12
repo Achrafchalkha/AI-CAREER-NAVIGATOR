@@ -80,7 +80,34 @@ cd AI-CAREER-NAVIGATOR
 ```
 
 ### 2. Configure Environment Variables
-Update `src/main/resources/application.properties`:
+
+#### Option A: Using Environment Variables (Recommended for Production)
+```bash
+# Set environment variables
+export MONGODB_URI="mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority&ssl=true&authSource=admin"
+export MONGODB_DATABASE="aicareernavigator"
+export JWT_SECRET="your_jwt_secret_key_minimum_256_bits"
+export JWT_EXPIRATION="86400000"
+export OPENROUTER_API_KEY="sk-or-v1-your_openrouter_api_key"
+```
+
+#### Option B: Using .env File (For Development)
+1. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Edit `.env` file with your actual values:
+   ```properties
+   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority&ssl=true&authSource=admin
+   MONGODB_DATABASE=aicareernavigator
+   JWT_SECRET=your_jwt_secret_key_minimum_256_bits
+   JWT_EXPIRATION=86400000
+   OPENROUTER_API_KEY=sk-or-v1-your_openrouter_api_key
+   ```
+
+#### Option C: Direct Configuration (Not Recommended for Production)
+Update `src/main/resources/application.properties` directly (not recommended for production):
 
 ```properties
 # MongoDB Configuration
@@ -94,6 +121,8 @@ openrouter.api.key=your_openrouter_api_key
 jwt.secret=your_jwt_secret_key
 jwt.expiration=86400000
 ```
+
+**⚠️ Important:** Never commit sensitive information like API keys or database credentials to version control!
 
 ### 3. Build the Project
 ```bash
