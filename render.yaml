@@ -11,12 +11,12 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: MONGODB_URI
-        value: mongodb+srv://achrafchalkha:PkNMWX1hFMBQ5iAT@cluster0.avnezj3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+        sync: false
       - key: MONGODB_DATABASE
         value: aicareernavigator
       - key: JWT_SECRET
-        value: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+        sync: false
       - key: OPENROUTER_API_KEY
-        value: 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
+        sync: false
       - key: CORS_ALLOWED_ORIGINS
         value: https://ai-career-navigator-orcin.vercel.app
