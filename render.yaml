@@ -1,20 +1,22 @@
 services:
   - type: web
     name: ai-career-navigator-backend
-    env: java
-    buildCommand: ./mvnw clean package -DskipTests
-    startCommand: java -jar -Dspring.profiles.active=prod target/ai-career-navigator-0.0.1-SNAPSHOT.jar
+    env: docker
+    dockerfilePath: ./Dockerfile
     plan: free
+    region: oregon
+    branch: main
+    healthCheckPath: /health
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: MONGODB_URI
-        sync: false
+        value: mongodb+srv://achrafchalkha:PkNMWX1hFMBQ5iAT@cluster0.avnezj3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
       - key: MONGODB_DATABASE
         value: aicareernavigator
       - key: JWT_SECRET
-        sync: false
+        value: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
       - key: OPENROUTER_API_KEY
-        sync: false
+        value: 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
       - key: CORS_ALLOWED_ORIGINS
         value: https://ai-career-navigator-orcin.vercel.app
