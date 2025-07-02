@@ -1,0 +1,10 @@
+target/
+!target/*.jar
+*.md
+.git
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
