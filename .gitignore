@@ -38,6 +38,8 @@ build/
 .env.production
 .env.staging
 *.env
+run-local.bat
+*-local.bat
 
 ### Application Specific ###
 application-local.properties
