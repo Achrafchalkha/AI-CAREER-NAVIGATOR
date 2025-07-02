@@ -1,5 +1,8 @@
-# Multi-stage build for better optimization
-FROM maven:3.9.6-openjdk-17-slim AS build
+# Use Eclipse Temurin JDK 17 (more reliable and widely available)
+FROM eclipse-temurin:17-jdk-alpine AS build
+
+# Install Maven
+RUN apk add --no-cache maven
 
 # Set working directory
 WORKDIR /app
@@ -16,8 +19,8 @@ COPY src ./src
 # Build the application
 RUN mvn clean package -DskipTests
 
-# Runtime stage
-FROM openjdk:17-jre-slim
+# Runtime stage - Use Eclipse Temurin JRE for smaller image
+FROM eclipse-temurin:17-jre-alpine
 
 # Set working directory
 WORKDIR /app
