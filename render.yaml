@@ -17,4 +17,4 @@ services:
       - key: OPENROUTER_API_KEY
         sync: false
       - key: CORS_ALLOWED_ORIGINS
-        value: https://ai-career-navigator.vercel.app
+        value: https://ai-career-navigator-orcin.vercel.app
