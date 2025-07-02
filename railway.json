@@ -6,7 +6,7 @@
   },
   "deploy": {
     "startCommand": "java -jar -Dspring.profiles.active=prod app.jar",
-    "healthcheckPath": "/actuator/health",
+    "healthcheckPath": "/health",
     "healthcheckTimeout": 300
   }
 }
