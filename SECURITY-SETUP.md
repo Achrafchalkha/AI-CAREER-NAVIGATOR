@@ -24,10 +24,7 @@ OPENROUTER_API_KEY=your_openrouter_api_key
 
 ## 🌐 Production Deployment
 
-### Current API Keys (as of latest update):
-- **OpenRouter API Key**: `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`
-- **MongoDB URI**: `mongodb+srv://achrafchalkha:PkNMWX1hFMBQ5iAT@cluster0.avnezj3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
-- **JWT Secret**: `404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970`
+### ⚠️ IMPORTANT: Never put actual API keys in documentation!
 
 ### For Render.com Deployment:
 Add these environment variables in the Render dashboard:
