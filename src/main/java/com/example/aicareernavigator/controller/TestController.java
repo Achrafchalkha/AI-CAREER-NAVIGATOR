@@ -29,6 +29,15 @@ public class TestController {
         result.put("apiKeyPrefix", apiKey.substring(0, 10) + "...");
         return ResponseEntity.ok(result);
     }
+
+    /**
+     * Lightweight ping endpoint for UptimeRobot monitoring
+     * This endpoint is designed to be as fast as possible to keep the app alive
+     */
+    @GetMapping("/ping")
+    public String ping() {
+        return "pong";
+    }
     
     /**
      * Test OpenRouter API directly
